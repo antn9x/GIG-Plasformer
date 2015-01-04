@@ -4,9 +4,18 @@
  */
 package gig.games.platformer.managers;
 
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.light.PointLight;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 
 /**
  *
@@ -18,6 +27,27 @@ public class PGWorldManager extends AbstractManager {
     BulletAppState physicsState;
 
     public PGWorldManager() {
+    }
+
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        /**
+         * A white, spot light source.
+         */
+        PointLight lamp = new PointLight();
+        lamp.setPosition(new Vector3f(0, 10, 10));
+        lamp.setColor(ColorRGBA.White);
+        rootNode.addLight(lamp);
+        //Plan || Ground
+        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        material.setTexture("ColorMap", assetManager.loadTexture("Textures/graas2.jpg"));
+        Box floorBox = new Box(20, 0.25f, 20);
+        Geometry floorGeometry = new Geometry("Floor", floorBox);
+        floorGeometry.setMaterial(material);
+        floorGeometry.setLocalTranslation(0, -0.25f, 0);
+        floorGeometry.addControl(new RigidBodyControl(0));
+        rootNode.attachChild(floorGeometry);
     }
 
     public void attachWorld() {
