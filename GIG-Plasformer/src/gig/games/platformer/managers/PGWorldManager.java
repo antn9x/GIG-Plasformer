@@ -32,13 +32,17 @@ public class PGWorldManager extends AbstractManager {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
+        physicsState = new BulletAppState();
+        stateManager.attach(physicsState);
+        physicsState.setDebugEnabled(true);
+        this.worldNode = rootNode;
         /**
          * A white, spot light source.
          */
         PointLight lamp = new PointLight();
         lamp.setPosition(new Vector3f(0, 10, 10));
         lamp.setColor(ColorRGBA.White);
-        rootNode.addLight(lamp);
+        worldNode.addLight(lamp);
         //Plan || Ground
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         material.setTexture("ColorMap", assetManager.loadTexture("Textures/graas2.jpg"));
@@ -46,8 +50,10 @@ public class PGWorldManager extends AbstractManager {
         Geometry floorGeometry = new Geometry("Floor", floorBox);
         floorGeometry.setMaterial(material);
         floorGeometry.setLocalTranslation(0, -0.25f, 0);
-        floorGeometry.addControl(new RigidBodyControl(0));
-        rootNode.attachChild(floorGeometry);
+        RigidBodyControl floorControl = new RigidBodyControl(0);
+        floorGeometry.addControl(floorControl);
+        worldNode.attachChild(floorGeometry); 
+        getPhysicsSpace().add(floorControl);
     }
 
     public void attachWorld() {

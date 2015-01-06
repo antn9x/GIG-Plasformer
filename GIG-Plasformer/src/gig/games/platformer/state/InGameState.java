@@ -24,7 +24,7 @@ public class InGameState extends BaseGameState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         setEnabled(true);
-        app.getViewPort().setBackgroundColor(ColorRGBA.Blue);
+        app.getViewPort().setBackgroundColor(ColorRGBA.Blue);        
     }
 
     @Override
